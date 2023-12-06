@@ -18,6 +18,9 @@
         android:theme="@style/Theme.De_tai"
         tools:targetApi="31">
         <activity
+            android:name=".HangGioActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -26,6 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCaclB6wE1tK0xuqAT4J5drsiO92KmDVkA" />
+
     </application>
 
 </manifest>

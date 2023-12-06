@@ -2,12 +2,14 @@ package example.de_tai;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Address;
@@ -30,6 +32,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +52,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     RelativeLayout RLHome;
     ProgressBar PBLoading;
@@ -58,11 +66,13 @@ public class MainActivity extends AppCompatActivity {
     private int PERMISSION_CODE = 1;
     private String cityName;
 
+    GoogleMap myMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         addControl();
         addEvent();
@@ -86,37 +96,40 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Location information unavailable", Toast.LENGTH_SHORT).show();
         }
 
- //hiii
-        //Set background
-//        RelativeLayout relativeLayout = findViewById(R.id.main_layout);
-//        Calendar calendar = Calendar.getInstance();
-//        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-//
-//        if(currentHour >= 5 && currentHour <= 11) {
-//            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_morning);
-//            relativeLayout.setBackground(animationDrawable);
-//            animationDrawable.setEnterFadeDuration(2500);
-//            animationDrawable.setExitFadeDuration(5000);
-//            animationDrawable.start();
-//        } else if (currentHour >= 12 && currentHour <= 16) {
-//            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_afternoon);
-//            relativeLayout.setBackground(animationDrawable);
-//            animationDrawable.setEnterFadeDuration(2500);
-//            animationDrawable.setExitFadeDuration(5000);
-//            animationDrawable.start();
-//        } else if(currentHour >= 17 && currentHour <= 19) {
-//            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_evening);
-//            relativeLayout.setBackground(animationDrawable);
-//            animationDrawable.setEnterFadeDuration(2500);
-//            animationDrawable.setExitFadeDuration(5000);
-//            animationDrawable.start();
-//        } else if (currentHour >= 20 && currentHour <= 4) {
-//            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_night);
-//            relativeLayout.setBackground(animationDrawable);
-//            animationDrawable.setEnterFadeDuration(2500);
-//            animationDrawable.setExitFadeDuration(5000);
-//            animationDrawable.start();
-//        }
+//        Set background
+        ConstraintLayout constraintLayout = findViewById(R.id.mainlayout);
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        if(currentHour >= 5 && currentHour <= 11) {
+            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_morning);
+            constraintLayout.setBackground(animationDrawable);
+            animationDrawable.setEnterFadeDuration(2500);
+            animationDrawable.setExitFadeDuration(5000);
+            animationDrawable.start();
+        } else if (currentHour >= 12 && currentHour <= 16) {
+            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_afternoon);
+            constraintLayout.setBackground(animationDrawable);
+            animationDrawable.setEnterFadeDuration(2500);
+            animationDrawable.setExitFadeDuration(5000);
+            animationDrawable.start();
+        } else if(currentHour >= 17 && currentHour <= 19) {
+            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_evening);
+            constraintLayout.setBackground(animationDrawable);
+            animationDrawable.setEnterFadeDuration(2500);
+            animationDrawable.setExitFadeDuration(5000);
+            animationDrawable.start();
+        } else if (currentHour >= 20 && currentHour <= 4) {
+            AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_night);
+            constraintLayout.setBackground(animationDrawable);
+            animationDrawable.setEnterFadeDuration(2500);
+            animationDrawable.setExitFadeDuration(5000);
+            animationDrawable.start();
+        }
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(MainActivity.this);
+
 
     }
     public void addControl(){
@@ -153,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     @Override
@@ -170,6 +184,9 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+cityName+"&days=3&aqi=no&alerts=no";
         TVCityName.setText(cityName);
         RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        Intent intent = new Intent(MainActivity.this, HangGioActivity.class);
+        intent.putExtra("locate", cityName);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -237,5 +254,20 @@ public class MainActivity extends AppCompatActivity {
         return cityName;
     }
 
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        myMap = googleMap;
 
+        LatLng sydney = new LatLng(-34, 151);
+        myMap.addMarker(new MarkerOptions().position(sydney).title("Sydney"));
+        myMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Intent intent = new Intent(getApplicationContext(), HangGioActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
