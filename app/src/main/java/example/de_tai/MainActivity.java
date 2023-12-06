@@ -120,10 +120,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void addControl(){
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        RLHome = (RelativeLayout) findViewById(R.id.RLHome);
-        PBLoading = (ProgressBar) findViewById(R.id.PBLoading);
+//        RLHome = (RelativeLayout) findViewById(R.id.RLHome);
+//        PBLoading = (ProgressBar) findViewById(R.id.PBLoading);
         TVCityName = (TextView) findViewById(R.id.TVCityName);
         TVTemperature1 = (TextView) findViewById(R.id.TVTemperature1);
         TVCondition = (TextView) findViewById(R.id.TVCondition);
