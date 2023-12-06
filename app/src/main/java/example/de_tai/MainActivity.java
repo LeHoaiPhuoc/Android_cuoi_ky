@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         myMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Intent intent = new Intent(getApplicationContext(), HangGioActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Radar.class);
                 startActivity(intent);
             }
         });
