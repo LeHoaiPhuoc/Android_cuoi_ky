@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:id="@+id/mainlayout"
-    tools:context=".MainActivity">
+    tools:context=".View.MainActivity">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        tools:layout_editor_absoluteX="-39dp"
+        tools:layout_editor_absoluteY="-89dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,10 +28,10 @@
                 android:src="@color/black_shade_1" />
 
             <LinearLayout
+                android:id="@+id/LLName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/LLName">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/TVCityName"
@@ -42,6 +43,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+
                 <ImageView
                     android:id="@+id/IVSetting"
                     android:layout_width="40dp"
@@ -55,34 +57,34 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/LLedt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/LLedt"
                 android:layout_below="@id/LLName"
-                android:weightSum="5" >
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/TILCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/TILCity"
                     android:layout_margin="10dp"
                     android:layout_weight="4.5"
                     android:background="@android:color/transparent"
                     android:hint="Enter City Name"
                     android:padding="5dp"
-                    app:hintTextColor="@color/white"
-                    android:textColorHint="@color/white">
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/EdtCity"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/EdtCity"
                         android:importantForAutofill="no"
                         android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp" />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -120,23 +122,23 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/TVTemperature1"
                 android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_gravity="center"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView
+                android:id="@+id/TVCondition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/TVCondition"
+                android:layout_below="@id/IVIcon"
                 android:layout_margin="10dp"
                 android:gravity="center"
-                android:textAlignment="center"
                 android:text="Condition"
-                android:textColor="@color/white"
-                android:layout_below="@id/IVIcon" />
+                android:textAlignment="center"
+                android:textColor="@color/white" />
 
 
             <TextView
@@ -154,12 +156,12 @@
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RVWeather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/RVWeather"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" >
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -174,17 +176,24 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Phần Của Tường - Phước"
                     android:layout_marginTop="10dp"
+                    android:text="Phần Của Tường - Phước"
                     android:textColor="@color/black"
-                    android:textSize="30pt"/>
+                    android:textSize="30pt" />
+
+                <com.anychart.AnyChartView
+                    android:id="@+id/any_chart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:padding="10dp" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/custom_border"
                 android:layout_margin="10dp"
+                android:background="@drawable/custom_border"
                 android:orientation="vertical">
 
                 <TextView
@@ -193,32 +202,32 @@
                     android:layout_height="wrap_content"
                     android:text="Phần Của Ân - Nam"
                     android:textColor="@color/black"
-                    android:textSize="30pt"/>
+                    android:textSize="30pt" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/custom_border"
                 android:layout_margin="10dp"
+                android:background="@drawable/custom_border"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="10pt"
-                    android:textStyle="bold"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
-                    android:text="Radar" />
+                    android:text="Radar"
+                    android:textSize="10pt"
+                    android:textStyle="bold" />
 
                 <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:id="@+id/map"
-                    android:layout_margin="20dp"
-                    android:name="com.google.android.gms.maps.SupportMapFragment" />
+                    android:layout_margin="20dp" />
             </LinearLayout>
 
 

@@ -18,13 +18,16 @@
         android:theme="@style/Theme.De_tai"
         tools:targetApi="31">
         <activity
-            android:name=".Radar"
+            android:name=".View.ChartActivity"
             android:exported="false" />
         <activity
-            android:name=".HangGioActivity"
+            android:name=".View.RadarActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".View.HangGioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
