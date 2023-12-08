@@ -42,8 +42,9 @@ public class HangGioActivity extends AppCompatActivity {
         setBackground();
         //-----------------------------------
 
-        Intent locate = getIntent();
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+locate+"&days=3&aqi=yes&alerts=no";
+        Intent intent = getIntent();
+        String test2 = intent.getStringExtra("MY_STRING_2");
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+test2+"&days=3&aqi=yes&alerts=no";
         getAllDataArtist(url);
 
 

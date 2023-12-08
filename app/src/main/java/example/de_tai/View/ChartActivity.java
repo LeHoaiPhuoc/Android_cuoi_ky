@@ -41,8 +41,9 @@ public class ChartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chart);
 
-        Intent locate = getIntent();
-        String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+locate+"&days=3&aqi=yes&alerts=no";
+        Intent intent = getIntent();
+        String test = intent.getStringExtra("MY_STRING");
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+test+"&days=3&aqi=yes&alerts=no";
         getAllDataArtist(url);
     }
 
