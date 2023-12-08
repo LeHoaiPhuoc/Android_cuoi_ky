@@ -5,38 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".View.ChartActivity">
-
-<!--    <com.anychart.AnyChartView-->
-<!--        android:id="@+id/rainChart"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="200dp" />-->
-
-<!--    <com.anychart.AnyChartView-->
-<!--        android:id="@+id/humidChart"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="200dp" />-->
-
-<!--&lt;!&ndash;    <com.anychart.AnyChartView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/tempChart"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="200dp" />&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <com.anychart.AnyChartView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/uvChart"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="200dp" />&ndash;&gt;-->
-
-<!--    <com.anychart.AnyChartView-->
-<!--        android:id="@+id/windChart"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="200dp" />-->
-
-<!--&lt;!&ndash;    <com.anychart.AnyChartView&ndash;&gt;-->
-<!--&lt;!&ndash;        android:id="@+id/dewChart"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:layout_height="200dp" />&ndash;&gt;-->
-
+    tools:context=".ChartActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -47,36 +16,144 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/barChart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_uvNum"
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Radar" />
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/barChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="UV" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart_humid"
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart_uvNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart_dewpoint"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Humid" />
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart_tempC"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_humid"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Dewpoint" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_dewpoint"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Temperature" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/chart_tempC"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/custom_border"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="10pt"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Humid" />
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

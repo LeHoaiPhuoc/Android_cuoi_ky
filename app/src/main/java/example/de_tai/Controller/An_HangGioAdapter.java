@@ -15,13 +15,13 @@ import java.util.ArrayList;
 import example.de_tai.Model.HangGioClass;
 import example.de_tai.R;
 
-public class HangGioAdapter extends ArrayAdapter {
+public class An_HangGioAdapter extends ArrayAdapter {
 
     Context context;
     int layoutItem;
     ArrayList<HangGioClass> lsHangGio = new ArrayList<>();
 
-    public HangGioAdapter(Context context, int resource, ArrayList<HangGioClass> lsHangGio) {
+    public An_HangGioAdapter(Context context, int resource, ArrayList<HangGioClass> lsHangGio) {
         super(context, resource, lsHangGio);
         this.context = context;
         this.layoutItem = resource;
