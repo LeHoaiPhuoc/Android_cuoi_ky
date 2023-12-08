@@ -180,17 +180,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LLChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String push = TVCityName.getText().toString();
-                Intent intent = new Intent(MainActivity.this, ChartActivity.class);
-                intent.putExtra("MY_STRING", push); // Pass the cityName to ChartActivity
-                startActivity(intent);
+//                String push = TVCityName.getText().toString();
+//                Intent intent = new Intent(MainActivity.this, ChartActivity.class);
+//                intent.putExtra("MY_STRING", push); // Pass the cityName to ChartActivity
+//                startActivity(intent);
 
                 String push2 = TVCityName.getText().toString();
                 Intent intent2 = new Intent(MainActivity.this, HangGioActivity.class);
-                intent.putExtra("MY_STRING_2", push2); // Pass the cityName to ChartActivity
+                intent2.putExtra("MY_STRING_2", push2); // Pass the cityName to ChartActivity
                 startActivity(intent2);
             }
         });
+
 
     }
 
