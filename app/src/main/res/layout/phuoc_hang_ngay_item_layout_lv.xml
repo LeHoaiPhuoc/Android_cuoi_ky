@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/tvKhaNangCoMuaTheoNgay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="57%"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+        <TextView
+            android:id="@+id/tvTenThoiTietTheoNgay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20%"
+            android:textColor="@android:color/white"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tvTocDoGioTrungBinhTheoNgay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="14 km/h"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_marginTop="16dp"/>
+
+        <ImageView
+            android:id="@+id/imgIconHuongGioTheoNgay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_wind_power_24"
+            android:layout_marginTop="16dp"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvThu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Th 4"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

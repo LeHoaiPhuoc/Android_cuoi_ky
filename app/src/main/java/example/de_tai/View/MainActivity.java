@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -65,8 +66,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,8 +78,10 @@ import example.de_tai.Controller.Nam_GD2nAdapter;
 import example.de_tai.Controller.Nam_MoonAdapter;
 import example.de_tai.Controller.Nam_WindAdapter;
 import example.de_tai.Controller.Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter;
+import example.de_tai.Controller.Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter;
 import example.de_tai.Model.Nam_Weather_GD2_next;
 import example.de_tai.Model.Phuoc_GridViewThongSoThoiTietDiaDiemHienTai;
+import example.de_tai.Model.Phuoc_RecyclerViewThongSoThoiTietTheoNgay;
 import example.de_tai.R;
 import example.de_tai.Controller.WeatherRVAdaper;
 import example.de_tai.Model.WeatherRVModel;
@@ -136,6 +142,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     List<String> lsNhietDoCaoNhat = new ArrayList<>();
     List<String> lsNhietDoThapNhat = new ArrayList<>();
     String url_barchart = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=3&aqi=yes&alerts=no";
+
+    // RecyclerView
+    RecyclerView rcvThongSoThoiTietTheoNgay;
+    Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter recyclerViewThongSoThoiTietTheoNgayAdapter;
+    ArrayList<Phuoc_RecyclerViewThongSoThoiTietTheoNgay> lsRecyclerViewThongSoThoiTietTheoNgay = new ArrayList<>();
+    String url_rcv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Hanoi&days=3&aqi=yes&alerts=no";
+
 
 
     @Override
@@ -215,6 +228,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Barchart
         getAllDataForecastCurretnly(url_barchart);
+
+        // RecyclerView
+        getDataRecyclerViewForecastDaily(url_rcv);
+
         //===========PHƯỚC============
 
 
@@ -272,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //==========PHƯỚC==========
         gvThongSoThoiTietDiaDiemHienTai = findViewById(R.id.gvThongSoThoiTietDiaDiemHienTai);
+        rcvThongSoThoiTietTheoNgay = findViewById(R.id.rcvThongSoThoiTietTheoNgay);
     }
 
     public void addEvent(){
@@ -745,9 +763,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
     }
-
-
-
     private void setBarChart(){
         // Khởi tạo BarChart
         barChart = findViewById(R.id.idBarChart);
@@ -861,7 +876,149 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // barChart.animateY(5000);
     }
 
-    // Hàm kiểm tra xem url có thay đổi hay không, nếu có thì gọi lại làm lấy API
+
+    // RecyclerView
+    // Phương thức lấy dữ liệu thông số thời tiết
+    public void getDataRecyclerViewForecastDaily(String url) {
+        // Yêu cầu sử dụng thư viện volley
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        // Tạo dối tượng trong lớp StringRequest để lấy dữ liệu từ url
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() { // Định nghĩa 1 trình nghe mới khi có phản hồi từ yêu cầu
+                    @Override
+                    public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
+                        try {
+                            parseJsonDataRecyclerViewForecastDaily(response); // Phân tích dữ liệu JSON từ phản hồi
+                        } catch (
+                                JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { // Khi có lỗi thì phương thức này sẽ được gọi để xử lý yêu cầu
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest); // Yêu cầu hàng đợi (trong trường hợp này là lấy yêu cầu từ file JSON)
+
+    }
+
+
+    // Phương thức phân tích dữ liệu JSON từ phản hồi
+    public void parseJsonDataRecyclerViewForecastDaily (String response) throws JSONException {
+
+
+        // Tạo 1 đối tượng JSON chính từ chuỗi phản hồi
+        JSONObject jsonRespond = new JSONObject(response);
+
+        // Truy cập đối tượng forecast
+        JSONObject forecastObject = jsonRespond.getJSONObject("forecast");
+
+        // Truy cập mảng forecastday
+        JSONArray forecastdayArray = forecastObject.getJSONArray("forecastday");
+
+        // Lặp qua từng đối tượng trong mảng forecastday
+        for(int i = 0; i<forecastdayArray.length(); i++){
+            Phuoc_RecyclerViewThongSoThoiTietTheoNgay recyclerViewThongSoThoiTietTheoNgay = new Phuoc_RecyclerViewThongSoThoiTietTheoNgay();
+
+            // Lấy đối tượng trong mảng forecastday
+            JSONObject forecastdayObject = forecastdayArray.getJSONObject(i);
+
+            // Lấy đối tượng "date" để chuyển qua thứ
+            String dateObject = forecastdayObject.getString("date");
+            // Lấy xong rồi chuyển nó thành thứ trong tuần
+            String dateString = dateObject;
+
+            // Sử dụng hàm để lấy thứ trong tuần
+            String dayOfWeek = getDayOfWeek(dateString);
+
+            recyclerViewThongSoThoiTietTheoNgay.setThuTrongTuan(dayOfWeek);
+
+            // Truy cập dối tượng "day" để lấy tốc độ gió lớn nhất
+            JSONObject dayObject = forecastdayObject.getJSONObject("day");
+            String maxWindKph = dayObject.getString("maxwind_mph");
+            recyclerViewThongSoThoiTietTheoNgay.setTocDoGioTrungBinhTheoNgay(maxWindKph + "Km/h");
+
+            // Truy cập dối tượng "daily_chance_of_rain" để lấy khả năng có mưa theo ngày
+            String dailyChainceOfRain = dayObject.getString("daily_chance_of_rain");
+            recyclerViewThongSoThoiTietTheoNgay.setKhaNangCoMuaTheoNgay(dailyChainceOfRain + "%");
+            // Truy cập vào đối tượng condition trong đối tượng day
+            JSONObject conditionObject = dayObject.getJSONObject("condition");
+            // Truy cập đối tượng text trong đối tượng condition
+            String textObject = conditionObject.getString("text");
+            recyclerViewThongSoThoiTietTheoNgay.setNameWeather(textObject);
+            recyclerViewThongSoThoiTietTheoNgay.setIconHuongGioTheoGio(R.drawable.baseline_wind_power_24);
+
+
+            // Truy cập mảng hour bên trong đối tượng forecastday
+            // JSONArray hourArray = forecastdayObject.getJSONArray("hour");
+
+            // Lặp qua từng đối tượng trong mảng hour để lấy nhiệt độ hàng giờ
+            /*for( int j = 0; j<hourArray.length(); j++){
+
+                JSONObject hourObject = hourArray.getJSONObject(j);
+
+                // Lấy thông tin nhiệt độ từ đối tượng hourOject
+                //double tempeartureCTamp = hourObject.getDouble("temp_c");
+                //a.nhietDoTheoGio = String.valueOf(tempeartureCTamp);
+
+                //int chanceOfRainTamp = hourObject.getInt("chance_of_rain");
+                //a.khaNangCoMuaTheoGio = String.valueOf(chanceOfRainTamp);
+
+                // Truy cập vào đối tượng condition để lấy link icon
+                JSONObject conditionObject_2 = hourObject.getJSONObject("condition");
+
+                // Lấy giá trị của icon
+              //  recyclerViewThongSoThoiTietTheoNgay.setIconLink(conditionObject.getString("icon"));
+                // Lấy giá trị của icon
+                // Lấy giá trị của icon
+              //  String nameWeather = conditionObject.getString("text");
+
+             //   recyclerViewThongSoThoiTietTheoNgay.setNameWeather(nameWeather);
+                // Set tạm hình ảnh hướng gió lên trước
+                recyclerViewThongSoThoiTietTheoNgay.setIconHuongGioTheoGio(R.drawable.baseline_wind_power_24);
+
+
+
+                lsRecyclerViewThongSoThoiTietTheoNgay.add(recyclerViewThongSoThoiTietTheoNgay);
+            }*/
+            lsRecyclerViewThongSoThoiTietTheoNgay.add(recyclerViewThongSoThoiTietTheoNgay);
+        }
+
+        recyclerViewThongSoThoiTietTheoNgayAdapter = new Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter(lsRecyclerViewThongSoThoiTietTheoNgay);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rcvThongSoThoiTietTheoNgay.setLayoutManager(layoutManager);
+        rcvThongSoThoiTietTheoNgay.setAdapter(recyclerViewThongSoThoiTietTheoNgayAdapter);
+        recyclerViewThongSoThoiTietTheoNgayAdapter.notifyDataSetChanged();
+    }
+
+
+    // Hàm chuyển chuỗi ngày thành thứ trong tuần
+    private String getDayOfWeek(String dateString) {
+        // Định dạng của chuỗi ngày
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        try {
+            // Chuyển đổi chuỗi thành đối tượng Date
+            Date date = dateFormat.parse(dateString);
+
+            // Định dạng mới để hiển thị thứ trong tuần
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+
+            // Lấy thứ trong tuần từ đối tượng Date
+            return dayFormat.format(date);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null; // Trả về null nếu có lỗi chuyển đổi
+        }
+    }
+
+
+
+
 
     //=============================PHƯỚC========================
 
