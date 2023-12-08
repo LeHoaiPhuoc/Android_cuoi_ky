@@ -180,11 +180,30 @@
                     android:textColor="@color/black"
                     android:textSize="30pt" />
 
-                <com.anychart.AnyChartView
-                    android:id="@+id/any_chart_view"
+                <LinearLayout
+                    android:id="@+id/LLChart"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:padding="10dp" />
+                    android:layout_height="210dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tcChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chart"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="10pt"/>
+
+                    <com.anychart.AnyChartView
+                        android:id="@+id/any_chart_view"
+                        android:layout_width="match_parent"
+                        android:padding="10dp"
+                        android:layout_height="200dp"
+                        />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

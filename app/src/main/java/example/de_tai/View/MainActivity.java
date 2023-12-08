@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<WeatherRVModel> weatherRVModelArrayList;
     WeatherRVAdaper weatherRVAdaper;
     LocationManager locationManager;
+    LinearLayout LLChart;
 
     AnyChartView any_chart_view;
     private int PERMISSION_CODE = 1;
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         IVSearch = (ImageView) findViewById(R.id.IVSearch);
         IVBack = (ImageView) findViewById(R.id.IVBack);
         RVWeather = (RecyclerView) findViewById(R.id.RVWeather);
+        LLChart = (LinearLayout) findViewById(R.id.LLChart);
         weatherRVModelArrayList = new ArrayList<>();
         weatherRVAdaper = new WeatherRVAdaper(this,weatherRVModelArrayList);
         RVWeather.setAdapter(weatherRVAdaper);
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        any_chart_view.setOnClickListener(new View.OnClickListener() {
+        LLChart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ChartActivity.class);
