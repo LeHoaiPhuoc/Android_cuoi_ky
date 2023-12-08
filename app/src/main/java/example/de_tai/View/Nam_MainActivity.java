@@ -16,7 +16,7 @@ public class Nam_MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nam_activity_main);
- //hiii
+ /*//hiii
         //Set background
         RelativeLayout relativeLayout = findViewById(R.id.main_layout);
         Calendar calendar = Calendar.getInstance();
@@ -48,5 +48,6 @@ public class Nam_MainActivity extends AppCompatActivity {
             animationDrawable.start();
         }
 
+    }*/
     }
 }

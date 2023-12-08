@@ -1,3 +1,4 @@
+/*
 package example.de_tai.View;
 
 import android.graphics.drawable.AnimationDrawable;
@@ -144,9 +145,11 @@ public class Nam_GD2_next extends AppCompatActivity {
             JSONObject astroArray =forecastday.getJSONObject("astro");
             a.sunrise = astroArray.getString("sunrise");
             a.sunset = astroArray.getString("sunset");
-          /*  a.moonrise =astroArray.getString("moonrise");
+          */
+/*  a.moonrise =astroArray.getString("moonrise");
             a.moonset =astroArray.getString("moonset");
-            a.moonphase =astroArray.getString("moon_phase");*/
+            a.moonphase =astroArray.getString("moon_phase");*//*
+
 
             lsGD2_next.add(a);
 
@@ -251,4 +254,4 @@ public class Nam_GD2_next extends AppCompatActivity {
 
 
 
-}
+}*/

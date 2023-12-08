@@ -13,12 +13,14 @@
         android:layout_gravity="center">
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/tvMoonrise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/tvMoonphase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
             android:paddingRight="50dp"/>
 
         <TextView
+            android:textColor="@color/white"
             android:id="@+id/tvMoonset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
