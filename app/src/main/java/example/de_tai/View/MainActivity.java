@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     Nam_MoonAdapter moonAdapter;
 
     Nam_WindAdapter windAdapter;
+    ImageView IVCondition;
 
     ArrayList<Nam_Weather_GD2_next> lsGD2_next = new ArrayList<>();
 
@@ -200,6 +202,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    @SuppressLint("MissingInflatedId")
     public void addControl(){
         setContentView(R.layout.activity_main_new);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -228,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         lvMattrang =(ListView) findViewById(R.id.lvMattrang);
         lvGio =(ListView) findViewById(R.id.lvGio);
 
+        IVCondition = (ImageView) findViewById(R.id.IVCondition);
     }
 
     public void addEvent(){
@@ -299,9 +303,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     int isDay = response.getJSONObject("current").getInt("is_day");
                     String condition = response.getJSONObject("current").getJSONObject("condition").getString("text");
                     String conditionIcon = response.getJSONObject("current").getJSONObject("condition").getString("icon");
-                   // Picasso.get().load("http:".concat(conditionIcon)).into(IVIcon);
+                    // Tải hình ảnh và đặt vào ImageView sử dụng Picasso
+                    Picasso.get().load(conditionIcon).into(IVIcon);
+                    // Picasso.get().load("http:".concat(conditionIcon)).into(IVIcon);
                     Picasso.get().load("https:" + conditionIcon).into(IVIcon);
                     TVCondition.setText(condition);
+
 
 
                     JSONObject forecastObj = response.getJSONObject("forecast");
@@ -332,6 +339,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         weatherRVAdaper.notifyDataSetChanged();
 
                         data.add(new ValueDataEntry(hourOnly, Integer.parseInt(rain)));
+                       // hoursAdded++;
                     }
 
                     //VẼ SƠ ĐỒ
