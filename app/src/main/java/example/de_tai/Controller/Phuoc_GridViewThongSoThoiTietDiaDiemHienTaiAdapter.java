@@ -10,15 +10,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import example.de_tai.Model.GridViewThongSoThoiTietDiaDiemHienTai;
+import example.de_tai.Model.Phuoc_GridViewThongSoThoiTietDiaDiemHienTai;
 import example.de_tai.R;
 
-public class GridViewThongSoThoiTietDiaDiemHienTaiAdapter extends BaseAdapter {
+public class Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter extends BaseAdapter {
     Context context;
     int layout;
-    List<GridViewThongSoThoiTietDiaDiemHienTai> gridViewThongSoThoiTietDiaDiemHienTaiList;
+    List<Phuoc_GridViewThongSoThoiTietDiaDiemHienTai> gridViewThongSoThoiTietDiaDiemHienTaiList;
 
-    public GridViewThongSoThoiTietDiaDiemHienTaiAdapter(Context context, int layout, List<GridViewThongSoThoiTietDiaDiemHienTai> gridViewThongSoThoiTietDiaDiemHienTaiList) {
+    public Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter(Context context, int layout, List<Phuoc_GridViewThongSoThoiTietDiaDiemHienTai> gridViewThongSoThoiTietDiaDiemHienTaiList) {
         this.context = context;
         this.layout = layout;
         this.gridViewThongSoThoiTietDiaDiemHienTaiList = gridViewThongSoThoiTietDiaDiemHienTaiList;

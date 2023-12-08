@@ -18,14 +18,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import example.de_tai.Controller.GridViewThongSoThoiTietDiaDiemHienTaiAdapter;
-import example.de_tai.Model.GridViewThongSoThoiTietDiaDiemHienTai;
+import example.de_tai.Controller.Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter;
+import example.de_tai.Model.Phuoc_GridViewThongSoThoiTietDiaDiemHienTai;
 import example.de_tai.R;
 
-public class GridViewActivity extends AppCompatActivity {
+public class Phuoc_GridViewActivity extends AppCompatActivity {
     GridView gvThongSoThoiTietDiaDiemHienTai; // lv hiển thị dữ liệu
-    GridViewThongSoThoiTietDiaDiemHienTaiAdapter gridViewThongSoThoiTietDiaDiemHienTaiAdapter;
-    ArrayList<GridViewThongSoThoiTietDiaDiemHienTai> grvGridViewThongSoThoiTietDiaDiemHienTai = new ArrayList<>();
+    Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter gridViewThongSoThoiTietDiaDiemHienTaiAdapter;
+    ArrayList<Phuoc_GridViewThongSoThoiTietDiaDiemHienTai> grvGridViewThongSoThoiTietDiaDiemHienTai = new ArrayList<>();
     String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Hanoi&days=1&aqi=yes&alerts=no";
 
     @Override
@@ -44,7 +44,7 @@ public class GridViewActivity extends AppCompatActivity {
     // Phương thức lấy dữ liệu thông số thời tiết địa điểm hiện tại
     public void getAllDataArtist(String url) {
         // Yêu cầu sử dụng thư viện volley
-        RequestQueue requestQueue = Volley.newRequestQueue(GridViewActivity.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(Phuoc_GridViewActivity.this);
 
         // Tạo dối tượng trong lớp StringRequest để lấy dữ liệu từ url
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -80,7 +80,7 @@ public class GridViewActivity extends AppCompatActivity {
 
         // Lấy thông số "Cảm giác như"
         // Tạo đối tượng lấy thông số
-        GridViewThongSoThoiTietDiaDiemHienTai camGiacNhu = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai camGiacNhu = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int feelslikecObject = currentOject.getInt("feelslike_c");
         camGiacNhu.icon = R.drawable.img_cam_giac_nhu;
         camGiacNhu.moTaIcon = "Cảm giác như";
@@ -88,7 +88,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(camGiacNhu);
 
         // Lấy thông số "Độ ẩm"
-        GridViewThongSoThoiTietDiaDiemHienTai doAm = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai doAm = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int humidityObject = currentOject.getInt("humidity");
         doAm.icon = R.drawable.img_do_am;
         doAm.moTaIcon = "Độ ẩm";
@@ -96,7 +96,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(doAm);
 
         // Lấy thông số "Chỉ số uv"
-        GridViewThongSoThoiTietDiaDiemHienTai uv = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai uv = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int uvObject = currentOject.getInt("uv");
         uv.icon = R.drawable.img_uv;
         uv.moTaIcon = "Chỉ số uv";
@@ -104,7 +104,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(uv);
 
         // Lấy thông số "Tầm nhìn"
-        GridViewThongSoThoiTietDiaDiemHienTai vis = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai vis = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int visObject = currentOject.getInt("vis_km");
         vis.icon = R.drawable.img_tam_nhin;
         vis.moTaIcon = "Tầm nhìn";
@@ -112,7 +112,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(vis);
 
         // Lấy thông số "Tốc độ gió"
-        GridViewThongSoThoiTietDiaDiemHienTai windKph = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai windKph = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int windKphObject = currentOject.getInt("wind_kph");
         windKph.icon = R.drawable.img_toc_do_gio;
         windKph.moTaIcon = "Tốc độ gió";
@@ -120,7 +120,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(windKph);
 
         // Lấy thông số "Áp suất không khí"
-        GridViewThongSoThoiTietDiaDiemHienTai pressureMb = new GridViewThongSoThoiTietDiaDiemHienTai();
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai pressureMb = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
         int pressureMbObject = currentOject.getInt("pressure_mb");
         pressureMb.icon = R.drawable.img_ap_suat_khong_khi;
         pressureMb.moTaIcon = "Áp suất";
@@ -128,7 +128,7 @@ public class GridViewActivity extends AppCompatActivity {
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(pressureMb);
 
 
-        gridViewThongSoThoiTietDiaDiemHienTaiAdapter = new GridViewThongSoThoiTietDiaDiemHienTaiAdapter(this, R.layout.thong_so_thoi_tiet_dia_diem_hien_tai_item_layout, grvGridViewThongSoThoiTietDiaDiemHienTai);
+        gridViewThongSoThoiTietDiaDiemHienTaiAdapter = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter(this, R.layout.thong_so_thoi_tiet_dia_diem_hien_tai_item_layout, grvGridViewThongSoThoiTietDiaDiemHienTai);
         gvThongSoThoiTietDiaDiemHienTai.setAdapter(gridViewThongSoThoiTietDiaDiemHienTaiAdapter);
 
     }

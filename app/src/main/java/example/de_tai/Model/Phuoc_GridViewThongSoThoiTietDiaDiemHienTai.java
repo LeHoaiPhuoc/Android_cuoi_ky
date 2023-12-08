@@ -1,16 +1,16 @@
 package example.de_tai.Model;
 
-public class GridViewThongSoThoiTietDiaDiemHienTai {
+public class Phuoc_GridViewThongSoThoiTietDiaDiemHienTai {
     public int icon;
     public String moTaIcon;
     public String thongSoThoiTietDiaDiemHienTai;
 
-    public GridViewThongSoThoiTietDiaDiemHienTai(int imgIcon, String moTaIcon, String thongSoThoiTietDiaDiemHienTai) {
+    public Phuoc_GridViewThongSoThoiTietDiaDiemHienTai(int imgIcon, String moTaIcon, String thongSoThoiTietDiaDiemHienTai) {
         this.icon = imgIcon;
         this.moTaIcon = moTaIcon;
         this.thongSoThoiTietDiaDiemHienTai = thongSoThoiTietDiaDiemHienTai;
     }
-    public GridViewThongSoThoiTietDiaDiemHienTai(){
+    public Phuoc_GridViewThongSoThoiTietDiaDiemHienTai(){
 
     }
 

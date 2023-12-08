@@ -23,14 +23,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import example.de_tai.Controller.HangGioAdapter;
+import example.de_tai.Controller.An_HangGioAdapter;
 import example.de_tai.Model.HangGioClass;
 import example.de_tai.R;
 
 public class HangGioActivity extends AppCompatActivity {
 
     ListView lvHangGio;
-    HangGioAdapter hangGioAdapter;
+    An_HangGioAdapter hangGioAdapter;
     ArrayList<HangGioClass> lsHangGio = new ArrayList<>();
 
 
@@ -161,7 +161,7 @@ public class HangGioActivity extends AppCompatActivity {
                 hoursAdded++;
             }
         }
-        hangGioAdapter = new HangGioAdapter(getApplicationContext(), R.layout.layout_hanggio_final, lsHangGio);
+        hangGioAdapter = new An_HangGioAdapter(getApplicationContext(), R.layout.layout_hanggio_final, lsHangGio);
         lvHangGio.setAdapter(hangGioAdapter);
     }
 
