@@ -12,6 +12,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -42,6 +44,13 @@ import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Area;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -64,7 +73,9 @@ import java.util.Locale;
 import example.de_tai.Controller.Nam_GD2nAdapter;
 import example.de_tai.Controller.Nam_MoonAdapter;
 import example.de_tai.Controller.Nam_WindAdapter;
+import example.de_tai.Controller.Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter;
 import example.de_tai.Model.Nam_Weather_GD2_next;
+import example.de_tai.Model.Phuoc_GridViewThongSoThoiTietDiaDiemHienTai;
 import example.de_tai.R;
 import example.de_tai.Controller.WeatherRVAdaper;
 import example.de_tai.Model.WeatherRVModel;
@@ -110,6 +121,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     String url2 ="https://api.weatherapi.com/v1/current.json?key=0f4ce91ee1a24deebce53135232211&q=London&aqi=no";
 
+
+     //=====================PHƯỚC=================
+
+
+    // GridView
+     GridView gvThongSoThoiTietDiaDiemHienTai; // lv hiển thị dữ liệu
+    Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter gridViewThongSoThoiTietDiaDiemHienTaiAdapter;
+    ArrayList<Phuoc_GridViewThongSoThoiTietDiaDiemHienTai> grvGridViewThongSoThoiTietDiaDiemHienTai = new ArrayList<>();
+    String url_gv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=1&aqi=yes&alerts=no";
+
+    // Barchart
+    BarChart barChart;
+    List<String> lsNhietDoCaoNhat = new ArrayList<>();
+    List<String> lsNhietDoThapNhat = new ArrayList<>();
+    String url_barchart = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=3&aqi=yes&alerts=no";
 
 
     @Override
@@ -182,6 +208,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getAllDataWeather_GD2_nextMoon(urlnam);
         getAllDataWeather_GD2_next2(url2);
 
+        //===========PHƯỚC============
+
+        // GridView
+        getAllDataForGridViewForecastCurretnly(url_gv);
+
+        // Barchart
+        getAllDataForecastCurretnly(url_barchart);
+        //===========PHƯỚC============
+
+
+
 
     }
     /// ---- NAM----
@@ -232,6 +269,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         lvGio =(ListView) findViewById(R.id.lvGio);
 
         IVCondition = (ImageView) findViewById(R.id.IVCondition);
+
+        //==========PHƯỚC==========
+        gvThongSoThoiTietDiaDiemHienTai = findViewById(R.id.gvThongSoThoiTietDiaDiemHienTai);
     }
 
     public void addEvent(){
@@ -548,5 +588,282 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         windAdapter = new Nam_WindAdapter(getApplicationContext(), R.layout.itemlayout_gio, lsWind);
         lvGio.setAdapter(windAdapter);
     }
+
+    //=================PHƯỚC==============
+
+    // GridView
+    // Phương thức lấy dữ liệu thông số thời tiết địa điểm hiện tại
+    public void getAllDataForGridViewForecastCurretnly(String url) {
+        // Yêu cầu sử dụng thư viện volley
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        // Tạo dối tượng trong lớp StringRequest để lấy dữ liệu từ url
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() { // Định nghĩa 1 trình nghe mới khi có phản hồi từ yêu cầu
+                    @Override
+                    public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
+                        try {
+                            parseJsonDataForGridViewForecastCurretnly(response); // Phân tích dữ liệu JSON từ phản hồi
+                        } catch (
+                                JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { // Khi có lỗi thì phương thức này sẽ được gọi để xử lý yêu cầu
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest); // Yêu cầu hàng đợi (trong trường hợp này là lấy yêu cầu từ file JSON)
+
+
+    }
+
+    // Phương thức phân tích dữ liệu JSON từ phản hồi
+    public void parseJsonDataForGridViewForecastCurretnly(String response) throws JSONException {
+
+
+        // Tạo 1 đối tượng JSON chính từ chuỗi phản hồi
+        JSONObject jsonRespond = new JSONObject(response);
+        // Truy cập đối tượng current
+        JSONObject currentOject = jsonRespond.getJSONObject("current");
+
+        // Lấy thông số "Cảm giác như"
+        // Tạo đối tượng lấy thông số
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai camGiacNhu = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int feelslikecObject = currentOject.getInt("feelslike_c");
+        camGiacNhu.icon = R.drawable.img_cam_giac_nhu;
+        camGiacNhu.moTaIcon = "Cảm giác như";
+        camGiacNhu.thongSoThoiTietDiaDiemHienTai = feelslikecObject + "°C";
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(camGiacNhu);
+
+        // Lấy thông số "Độ ẩm"
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai doAm = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int humidityObject = currentOject.getInt("humidity");
+        doAm.icon = R.drawable.img_do_am;
+        doAm.moTaIcon = "Độ ẩm";
+        doAm.thongSoThoiTietDiaDiemHienTai = humidityObject + "%";
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(doAm);
+
+        // Lấy thông số "Chỉ số uv"
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai uv = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int uvObject = currentOject.getInt("uv");
+        uv.icon = R.drawable.img_uv;
+        uv.moTaIcon = "Chỉ số uv";
+        uv.thongSoThoiTietDiaDiemHienTai = String.valueOf(uvObject);
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(uv);
+
+        // Lấy thông số "Tầm nhìn"
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai vis = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int visObject = currentOject.getInt("vis_km");
+        vis.icon = R.drawable.img_tam_nhin;
+        vis.moTaIcon = "Tầm nhìn";
+        vis.thongSoThoiTietDiaDiemHienTai = String.valueOf(visObject + " Km");
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(vis);
+
+        // Lấy thông số "Tốc độ gió"
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai windKph = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int windKphObject = currentOject.getInt("wind_kph");
+        windKph.icon = R.drawable.img_toc_do_gio;
+        windKph.moTaIcon = "Tốc độ gió";
+        windKph.thongSoThoiTietDiaDiemHienTai = String.valueOf(windKphObject + " Km/h");
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(windKph);
+
+        // Lấy thông số "Áp suất không khí"
+        Phuoc_GridViewThongSoThoiTietDiaDiemHienTai pressureMb = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTai();
+        int pressureMbObject = currentOject.getInt("pressure_mb");
+        pressureMb.icon = R.drawable.img_ap_suat_khong_khi;
+        pressureMb.moTaIcon = "Áp suất";
+        pressureMb.thongSoThoiTietDiaDiemHienTai = String.valueOf(pressureMbObject);
+        grvGridViewThongSoThoiTietDiaDiemHienTai.add(pressureMb);
+
+
+        gridViewThongSoThoiTietDiaDiemHienTaiAdapter = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter(this, R.layout.thong_so_thoi_tiet_dia_diem_hien_tai_item_layout, grvGridViewThongSoThoiTietDiaDiemHienTai);
+        gvThongSoThoiTietDiaDiemHienTai.setAdapter(gridViewThongSoThoiTietDiaDiemHienTaiAdapter);
+
+    }
+
+    // BarChart
+    // Phương thức lấy dữ liệu thông số thời tiết địa điểm hiện tại
+    public void getAllDataForecastCurretnly(String url) {
+        // Yêu cầu sử dụng thư viện volley
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        // Tạo dối tượng trong lớp StringRequest để lấy dữ liệu từ url
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() { // Định nghĩa 1 trình nghe mới khi có phản hồi từ yêu cầu
+                    @Override
+                    public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
+                        try {
+                            parseJsonDataForecastCurretnly(response); // Phân tích dữ liệu JSON từ phản hồi
+                            //  Log.d("ForecastData", "High Temperatures: " + lsNhietDoCaoNhat.toString());
+                            // Log.d("ForecastData", "Low Temperatures: " + lsNhietDoThapNhat.toString());
+
+                            setBarChart();
+                        } catch (
+                                JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { // Khi có lỗi thì phương thức này sẽ được gọi để xử lý yêu cầu
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest); // Yêu cầu hàng đợi (trong trường hợp này là lấy yêu cầu từ file JSON)
+
+
+    }
+
+    // Phương thức phân tích dữ liệu JSON từ phản hồi
+    public void parseJsonDataForecastCurretnly(String response) throws JSONException {
+        // Tạo một đối tượng JSON chính từ chuỗi phản hồi
+        JSONObject jsonRespond = new JSONObject(response);
+
+        // Truy cập đối tượng forecast
+        JSONObject forecastObject = jsonRespond.getJSONObject("forecast");
+
+        // Truy cập danh sách các ngày trong forecastday
+        JSONArray forecastdayArray = forecastObject.getJSONArray("forecastday");
+
+        // Lặp qua từng ngày trong danh sách
+        for (int i = 0; i < forecastdayArray.length(); i++) {
+            // Truy cập đối tượng day của từng ngày
+            JSONObject dayObject = forecastdayArray.getJSONObject(i).getJSONObject("day");
+
+            // Lấy thông số "Nhiệt độ cao nhất"
+            double maxTempC = dayObject.getDouble("maxtemp_c");
+
+            // Lấy thông số "Nhiệt độ thấp nhất"
+            double minTempC = dayObject.getDouble("mintemp_c");
+
+            // Thêm dữ liệu vào danh sách
+            lsNhietDoCaoNhat.add(String.valueOf(maxTempC));
+            lsNhietDoThapNhat.add(String.valueOf(minTempC));
+        }
+
+    }
+
+
+
+    private void setBarChart(){
+        // Khởi tạo BarChart
+        barChart = findViewById(R.id.idBarChart);
+        barChart.setBackgroundColor(Color.WHITE); // Thiết lập màu nền cho biểu đồ
+
+        ArrayList<BarEntry> entries1 = new ArrayList<>();
+
+        entries1.add(new BarEntry(1F, Float.parseFloat(lsNhietDoCaoNhat.get(0))));
+        entries1.add(new BarEntry(2F, Float.parseFloat(lsNhietDoCaoNhat.get(1))));
+        entries1.add(new BarEntry(3F, Float.parseFloat(lsNhietDoCaoNhat.get(2))));
+
+/*        entries1.add(new BarEntry(1F,  20)); // Ngày 1
+        entries1.add(new BarEntry(2, 15)); // Ngày 2
+        entries1.add(new BarEntry(3, 20)); // Ngày 3*/
+
+
+        ArrayList<BarEntry> entries2 = new ArrayList<>();
+        entries2.add(new BarEntry(1F, Float.parseFloat(lsNhietDoThapNhat.get(0))));
+        entries2.add(new BarEntry(2F, Float.parseFloat(lsNhietDoThapNhat.get(1))));
+        entries2.add(new BarEntry(3F, Float.parseFloat(lsNhietDoThapNhat.get(2))));
+
+        /*entries2.add(new BarEntry(1, 15)); // Ngày 1
+        entries2.add(new BarEntry(2, 10)); // Ngày 2
+        entries2.add(new BarEntry(3, 10)); // Ngày 3
+*/
+        barChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                // Chuyển giá trị float thành chuỗi theo ý bạn
+                // Ví dụ: Nếu value là 1.0, bạn muốn hiển thị 'T2'
+                // Các giá trị khác tương tự
+                int intValue = (int) value;
+                switch (intValue) {
+                    case 1:
+                        return "T2";
+                    case 2:
+                        return "T3";
+                    case 3:
+                        return "T4";
+                    default:
+                        return "";
+                }
+            }
+        });
+
+
+
+
+        BarDataSet bardataset1 = new BarDataSet(entries1, "Base");
+        bardataset1.setColor(Color.parseColor("#FFA500"));
+        // bardataset1.setValueTextColor(Color.WHITE);
+        bardataset1.setValueTextSize(15);
+
+        // Thêm ký hiệu độ trong độ C cho số liệu
+        bardataset1.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                // Chuyển về kiểu int nữa
+                return String.format(value+ "°") ;
+                //  return String.format("%d", (float)value) + "°";
+            }
+        });
+
+        BarDataSet bardataset2 = new BarDataSet(entries2, "Top");
+        bardataset2.setColor(Color.parseColor("#fffbfe"));
+        // bardataset2.setValueTextColor(Color.WHITE);
+        bardataset2.setValueTextSize(15);
+
+        // Thêm ký hiệu độ trong độ C cho số liệu
+        bardataset2.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                // Chuyển về kiểu int nữa
+                return String.format(value+ "°") ;
+                // return String.format("%d", (float)value) + "°";
+            }
+        });
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(bardataset1);
+        dataSets.add(bardataset2);
+
+        BarData data = new BarData(dataSets);
+        data.setBarWidth(0.5f); // Thiết lập độ rộng cho các cột
+        barChart.setData(data);
+
+
+        // Đặt mô tả cho biểu đồ
+        Description description = new Description();
+        description.setText("Daily High and Low Temperatures");
+        barChart.setDescription(description);
+
+        // Tắt chức năng zoom
+        barChart.setScaleEnabled(false);
+        barChart.setPinchZoom(false);
+
+        // Tắt các đường kẻ trên biểu đồ
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getXAxis().setDrawAxisLine(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+
+        // Thiết lập màu sắc cho số liệu trên các trục x và y
+      /*  barChart.getXAxis().setTextColor(Color.WHITE);
+        barChart.getAxisLeft().setTextColor(Color.WHITE);
+        barChart.getAxisRight().setTextColor(Color.WHITE);
+*/
+        // Tạo hiệu ứng animating the y-axis của biểu đồ trong 5000 milliseconds (5 giây)
+        // barChart.animateY(5000);
+    }
+
+    // Hàm kiểm tra xem url có thay đổi hay không, nếu có thì gọi lại làm lấy API
+
+    //=============================PHƯỚC========================
+
 }
 

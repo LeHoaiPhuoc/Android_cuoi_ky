@@ -11,8 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="-39dp"
-        tools:layout_editor_absoluteY="-89dp">
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="32dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -155,33 +155,40 @@
                 android:textStyle="bold" />
 
 
+            <GridView
+                android:id="@+id/gvThongSoThoiTietDiaDiemHienTai"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:numColumns="3" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:paddingBottom="20dp"
                 android:background="@drawable/custom_border"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:id="@+id/tvRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hourly"
-                    android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Hourly"
                     android:textColor="@color/black"
-                    android:textSize="10pt"/>
+                    android:textSize="10pt" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/RVWeather"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="3dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
@@ -190,27 +197,44 @@
                 <LinearLayout
                     android:id="@+id/LLChart"
                     android:layout_width="match_parent"
-                    android:layout_height="210dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvDaily"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Daily"
+                        android:textColor="@color/black"
+                        android:textSize="10pt" />
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/idBarChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginLeft="20dp"/>
+
 
                     <TextView
                         android:id="@+id/tcChart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Chart"
-                        android:layout_marginTop="10dp"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
+                        android:text="Chart"
                         android:textColor="@color/black"
-                        android:textSize="10pt"/>
+                        android:textSize="10pt" />
 
                     <com.anychart.AnyChartView
                         android:id="@+id/any_chart_view"
                         android:layout_width="match_parent"
+                        android:layout_height="200dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:padding="10dp"
-                        android:layout_height="200dp"
-                        />
+                        android:padding="10dp" />
 
                 </LinearLayout>
 
@@ -231,20 +255,21 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MẶT TRỜI"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="10dp"/>
+                        android:text="MẶT TRỜI"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
                     <ImageView
                         android:id="@+id/imgMattroi"
                         android:layout_width="500px"
                         android:layout_height="400px"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp" />
 
                     <ListView
                         android:id="@+id/lvMattroi"
@@ -252,14 +277,14 @@
                         android:layout_height="wrap_content" />
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MẶT TRĂNG"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="10dp"/>
+                        android:text="MẶT TRĂNG"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
 
 
                     <LinearLayout
@@ -293,34 +318,34 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_marginLeft="35dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginLeft="35dp">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:textColor="@color/white"
                             android:id="@+id/textView11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Mặt trăng mọc" />
+                            android:text="Mặt trăng mọc"
+                            android:textColor="@color/white" />
 
                         <TextView
-                            android:textColor="@color/white"
                             android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Chu kỳ trăng" />
+                            android:text="Chu kỳ trăng"
+                            android:textColor="@color/white" />
 
                         <TextView
-                            android:textColor="@color/white"
                             android:id="@+id/textView3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
                             android:layout_weight="1"
                             android:text="Mặt trăng lặn"
-                            android:layout_marginLeft="10dp"/>
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <ListView
@@ -332,28 +357,28 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="10dp"
                         android:text="GIÓ"
                         android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="15dp"
-                        android:layout_marginRight="10dp"/>
+                        android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/imgGio"
                         android:layout_width="500px"
                         android:layout_height="400px"
                         android:layout_gravity="center"
-                        android:layout_marginTop="10dp"/>
+                        android:layout_marginTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:text="Tốc độ gió KM/H"
-                        android:textSize="15dp"
                         android:layout_marginRight="15dp"
-                        />
+                        android:text="Tốc độ gió KM/H"
+                        android:textSize="15dp" />
+
                     <ListView
                         android:id="@+id/lvGio"
                         android:layout_width="match_parent"
