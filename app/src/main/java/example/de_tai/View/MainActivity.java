@@ -2,6 +2,7 @@ package example.de_tai.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.AnimationDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -101,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 //        Set background
-       /* ConstraintLayout constraintLayout = findViewById(R.id.mainlayout);
+        ConstraintLayout constraintLayout = findViewById(R.id.mainlayout);
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
 
@@ -123,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             animationDrawable.setEnterFadeDuration(2500);
             animationDrawable.setExitFadeDuration(5000);
             animationDrawable.start();
-        } else if (currentHour >= 20 && currentHour <= 4) {
+        } else if (currentHour >= 20 || currentHour <= 4) {
             AnimationDrawable animationDrawable = (AnimationDrawable) getResources().getDrawable(R.drawable.gradient_list_night);
             constraintLayout.setBackground(animationDrawable);
             animationDrawable.setEnterFadeDuration(2500);
             animationDrawable.setExitFadeDuration(5000);
             animationDrawable.start();
-        }*/
+        }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MainActivity.this);
