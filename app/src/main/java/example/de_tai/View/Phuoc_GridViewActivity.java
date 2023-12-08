@@ -31,7 +31,7 @@ public class Phuoc_GridViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gridview);
+        setContentView(R.layout.phuoc_activity_gridview);
 
         addControls();
         getAllDataArtist(url);

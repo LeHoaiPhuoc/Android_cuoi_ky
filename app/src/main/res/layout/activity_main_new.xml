@@ -154,31 +154,38 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RVWeather"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
-            </androidx.recyclerview.widget.RecyclerView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="10dp"
+                android:paddingBottom="20dp"
                 android:background="@drawable/custom_border"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/tvRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Hourly"
                     android:layout_marginTop="10dp"
-                    android:text="Phần Của Tường - Phước"
+                    android:layout_marginLeft="5dp"
                     android:textColor="@color/black"
-                    android:textSize="30pt" />
+                    android:textSize="10pt"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/RVWeather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
                     android:id="@+id/LLChart"
@@ -192,12 +199,15 @@
                         android:layout_height="wrap_content"
                         android:text="Chart"
                         android:layout_marginTop="10dp"
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/black"
                         android:textSize="10pt"/>
 
                     <com.anychart.AnyChartView
                         android:id="@+id/any_chart_view"
                         android:layout_width="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:padding="10dp"
                         android:layout_height="200dp"
                         />

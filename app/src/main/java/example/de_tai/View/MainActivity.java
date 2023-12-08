@@ -299,7 +299,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     int isDay = response.getJSONObject("current").getInt("is_day");
                     String condition = response.getJSONObject("current").getJSONObject("condition").getString("text");
                     String conditionIcon = response.getJSONObject("current").getJSONObject("condition").getString("icon");
-                    Picasso.get().load("http:".concat(conditionIcon)).into(IVIcon);
+                   // Picasso.get().load("http:".concat(conditionIcon)).into(IVIcon);
+                    Picasso.get().load("https:" + conditionIcon).into(IVIcon);
                     TVCondition.setText(condition);
 
 
