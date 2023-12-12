@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ArrayList<Phuoc_RecyclerViewThongSoThoiTietTheoNgay> lsRecyclerViewThongSoThoiTietTheoNgay = new ArrayList<>();
 
     // Chart
+    BarChart barChartAirQuality;
     TextView tvCLKK;
     TextView tvTTKK;
     TextView tvDatYeuCauKK;
@@ -298,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         rcvThongSoThoiTietTheoNgay = findViewById(R.id.rcvThongSoThoiTietTheoNgay);
 
         // Chart
+        barChartAirQuality = findViewById(R.id.barChartAirQuality);
         tvCLKK = findViewById(R.id.tvCLKK);
         tvTTKK = findViewById(R.id.tvTTKK);
         tvDatYeuCauKK = findViewById(R.id.tvDatYeuCauKK);
@@ -1128,7 +1130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void setBarChartAriQuality(){
         // Khởi tạo BarChart
-        barChart = findViewById(R.id.idBarChart);
+        //barChart = findViewById(R.id.idBarChart);
         //barChart.setBackgroundColor(Color.BLACK); // Thiết lập màu nền cho biểu đồ
 
         ArrayList<BarEntry> entries1 = new ArrayList<>();
@@ -1187,34 +1189,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         BarData data = new BarData(dataSets);
         data.setBarWidth(3f); // Thiết lập độ rộng cho các cột
-        barChart.setData(data);
+        barChartAirQuality.setData(data);
 
 
         // Đặt mô tả cho biểu đồ
         Description description = new Description();
         description.setText("");
-        barChart.setDescription(description);
+        barChartAirQuality.setDescription(description);
 
         // Tắt chức năng zoom
-        barChart.setScaleEnabled(false);
-        barChart.setPinchZoom(false);
+        barChartAirQuality.setScaleEnabled(false);
+        barChartAirQuality.setPinchZoom(false);
 
         // Tắt các đường kẻ trên biểu đồ
-        barChart.getXAxis().setDrawGridLines(false);
-        barChart.getXAxis().setDrawAxisLine(false);
-        barChart.getAxisLeft().setDrawGridLines(false);
-        barChart.getAxisLeft().setDrawAxisLine(false);
-        barChart.getAxisRight().setDrawGridLines(false);
-        barChart.getAxisRight().setDrawAxisLine(false);
+        barChartAirQuality.getXAxis().setDrawGridLines(false);
+        barChartAirQuality.getXAxis().setDrawAxisLine(false);
+        barChartAirQuality.getAxisLeft().setDrawGridLines(false);
+        barChartAirQuality.getAxisLeft().setDrawAxisLine(false);
+        barChartAirQuality.getAxisRight().setDrawGridLines(false);
+        barChartAirQuality.getAxisRight().setDrawAxisLine(false);
 
         // Ẩn dữ liệu trục x
-        XAxis xAxis = barChart.getXAxis();
+        XAxis xAxis = barChartAirQuality.getXAxis();
         xAxis.setDrawLabels(false); // Ẩn nhãn trục X
         xAxis.setDrawAxisLine(false); // Ẩn đường kẻ trục X
         xAxis.setDrawGridLines(false); // Ẩn đường kẻ lưới trên trục X
 
         //Ẩn dữ liệu trục Y bên phải
-        YAxis rightAxis = barChart.getAxisRight();
+        YAxis rightAxis = barChartAirQuality.getAxisRight();
         rightAxis.setEnabled(false); // Tắt trục Y bên phải
 
 

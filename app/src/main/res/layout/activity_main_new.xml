@@ -289,7 +289,7 @@
                         </LinearLayout>
 
                         <com.github.mikephil.charting.charts.HorizontalBarChart
-                            android:id="@+id/idBarChart"
+                            android:id="@+id/barChartAirQuality"
                             android:layout_width="match_parent"
                             android:layout_height="40dp" />
 
