@@ -47,6 +47,8 @@ import com.anychart.charts.Cartesian;
 import com.anychart.core.cartesian.series.Area;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -140,14 +142,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     BarChart barChart;
     List<String> lsNhietDoCaoNhat = new ArrayList<>();
     List<String> lsNhietDoThapNhat = new ArrayList<>();
-    String url_barchart_gv_rcv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=London&days=3&aqi=yes&alerts=no";
+    String url_barchart_gv_rcv_chart = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=London&days=3&aqi=yes&alerts=no";
 
     // RecyclerView
     RecyclerView rcvThongSoThoiTietTheoNgay;
     Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter recyclerViewThongSoThoiTietTheoNgayAdapter;
     ArrayList<Phuoc_RecyclerViewThongSoThoiTietTheoNgay> lsRecyclerViewThongSoThoiTietTheoNgay = new ArrayList<>();
 
-
+    // Chart
+    TextView tvCLKK;
+    TextView tvTTKK;
+    TextView tvDatYeuCauKK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,13 +227,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //===========PHƯỚC============
 
         // GridView
-        getAllDataForGridViewForecastCurretnly(url_barchart_gv_rcv);
-
-        // Barchart
-        getAllDataForecastCurretnly(url_barchart_gv_rcv);
+        getAllDataForGridViewForecastCurretnly(url_barchart_gv_rcv_chart);
 
         // RecyclerView
-        getDataRecyclerViewForecastDaily(url_barchart_gv_rcv);
+        getDataRecyclerViewForecastDaily(url_barchart_gv_rcv_chart);
+
+        // Chart
+        getAllDataAirQualityCurretnly(url_barchart_gv_rcv_chart);
+
+        // Barchart
+        getAllDataForecastCurretnly(url_barchart_gv_rcv_chart);
 
         //===========PHƯỚC============
 
@@ -288,6 +296,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //==========PHƯỚC==========
         gvThongSoThoiTietDiaDiemHienTai = findViewById(R.id.gvThongSoThoiTietDiaDiemHienTai);
         rcvThongSoThoiTietTheoNgay = findViewById(R.id.rcvThongSoThoiTietTheoNgay);
+
+        // Chart
+        tvCLKK = findViewById(R.id.tvCLKK);
+        tvTTKK = findViewById(R.id.tvTTKK);
+        tvDatYeuCauKK = findViewById(R.id.tvDatYeuCauKK);
+        //==========PHƯỚC==========
     }
 
     public void addEvent(){
@@ -311,6 +325,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 getAllDataForecastCurretnly("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
                 getAllDataForGridViewForecastCurretnly("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
                 getDataRecyclerViewForecastDaily("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
+                getAllDataAirQualityCurretnly("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
             }
         });
 
@@ -1032,6 +1047,178 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+    // Chart
+    // Phương thức lấy dữ liệu thông số thời tiết địa điểm hiện tại
+    public void getAllDataAirQualityCurretnly(String url) {
+        // Yêu cầu sử dụng thư viện volley
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        // Tạo dối tượng trong lớp StringRequest để lấy dữ liệu từ url
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() { // Định nghĩa 1 trình nghe mới khi có phản hồi từ yêu cầu
+                    @Override
+                    public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
+                        try {
+                            parseJsonAirQualityCurretnly(response); // Phân tích dữ liệu JSON từ phản hồi
+                            setBarChartAriQuality();
+                        } catch (
+                                JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { // Khi có lỗi thì phương thức này sẽ được gọi để xử lý yêu cầu
+                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(stringRequest); // Yêu cầu hàng đợi (trong trường hợp này là lấy yêu cầu từ file JSON)
+
+
+    }
+
+    // Phương thức phân tích dữ liệu JSON từ phản hồi
+    @SuppressLint("Range")
+    public void parseJsonAirQualityCurretnly(String response) throws JSONException {
+        // Tạo một đối tượng JSON chính từ chuỗi phản hồi
+        JSONObject jsonRespond = new JSONObject(response);
+
+        // Truy cập đối tượng forecast
+        JSONObject currenttObject = jsonRespond.getJSONObject("current");
+
+        // Truy cập danh sách các ngày trong forecastday
+        JSONObject air_qualityObject = currenttObject.getJSONObject("air_quality");
+
+        int us_epa_indexObject = air_qualityObject.getInt("us-epa-index");
+        if (us_epa_indexObject <= 50) {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#8CC84B"));
+            tvTTKK.setText("Tốt");
+            tvDatYeuCauKK.setText("Không khí đạt yêu cầu");
+        } else if (us_epa_indexObject <= 100) {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#FFFF99"));
+            tvTTKK.setText("Trung bình");
+            tvDatYeuCauKK.setText("Ảnh hưởng đến nhóm nhạy cảm");
+        } else if (us_epa_indexObject <= 150) {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#D2B48C"));
+            tvTTKK.setText("Kém");
+            tvDatYeuCauKK.setText("Nhóm nhạy cảm có thể gặp vấn đề");
+        } else if (us_epa_indexObject <= 200) {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#FF0000"));
+            tvTTKK.setText("Xấu");
+            tvDatYeuCauKK.setText("Mọi người có thể gặp vấn đề");
+        } else if (us_epa_indexObject <= 300) {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#8A2BE2"));
+            tvTTKK.setText("Rất xấu");
+            tvDatYeuCauKK.setText("Bắt đầu có vấn đề nghiêm trọng");
+        } else {
+            tvCLKK.setText(String.valueOf(us_epa_indexObject));
+            tvCLKK.setTextColor(Color.parseColor("#FF1493"));
+            tvTTKK.setText("Nguy hiểm");
+            tvDatYeuCauKK.setText("Sức khỏe mọi người có thể bị ảnh hưởng nghiêm trọng");
+        }
+
+    }
+
+
+
+    private void setBarChartAriQuality(){
+        // Khởi tạo BarChart
+        barChart = findViewById(R.id.idBarChart);
+        //barChart.setBackgroundColor(Color.BLACK); // Thiết lập màu nền cho biểu đồ
+
+        ArrayList<BarEntry> entries1 = new ArrayList<>();
+
+        entries1.add(new BarEntry(0, 500));
+
+
+        ArrayList<BarEntry> entries2 = new ArrayList<>();
+        entries2.add(new BarEntry(0, 300));
+
+        ArrayList<BarEntry> entries3 = new ArrayList<>();
+        entries3.add(new BarEntry(0, 200));
+
+        ArrayList<BarEntry> entries4 = new ArrayList<>();
+        entries4.add(new BarEntry(0, 150));
+
+        ArrayList<BarEntry> entries5 = new ArrayList<>();
+        entries5.add(new BarEntry(0, 100));
+
+        ArrayList<BarEntry> entries6 = new ArrayList<>();
+        entries6.add(new BarEntry(0, 50));
+
+
+
+
+
+        BarDataSet bardataset1 = new BarDataSet(entries1, "Nguy hiểm");
+        bardataset1.setColor(Color.parseColor("#FF1493")); //Màu hồng đậm
+
+        BarDataSet bardataset2 = new BarDataSet(entries2, "Rất xấu");
+        bardataset2.setColor(Color.parseColor("#8A2BE2")); // Màu tím
+
+        BarDataSet bardataset3 = new BarDataSet(entries3, "Xấu");
+        bardataset3.setColor(Color.parseColor("#FF0000")); // Màu đỏ
+
+        BarDataSet bardataset4 = new BarDataSet(entries4, "Kém");
+        bardataset4.setColor(Color.parseColor("#D2B48C")); // màu da gạch
+
+
+        BarDataSet bardataset5 = new BarDataSet(entries5, "Trung bình");
+        bardataset5.setColor(Color.parseColor("#FFFF99")); //Màu vàng nhạt
+
+
+        BarDataSet bardataset6 = new BarDataSet(entries6, "Tốt");
+        bardataset6.setColor(Color.parseColor("#8CC84B")); // Màu xanh đọt chuối
+
+
+
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(bardataset1);
+        dataSets.add(bardataset2);
+        dataSets.add(bardataset3);
+        dataSets.add(bardataset4);
+        dataSets.add(bardataset5);
+        dataSets.add(bardataset6);
+
+        BarData data = new BarData(dataSets);
+        data.setBarWidth(3f); // Thiết lập độ rộng cho các cột
+        barChart.setData(data);
+
+
+        // Đặt mô tả cho biểu đồ
+        Description description = new Description();
+        description.setText("");
+        barChart.setDescription(description);
+
+        // Tắt chức năng zoom
+        barChart.setScaleEnabled(false);
+        barChart.setPinchZoom(false);
+
+        // Tắt các đường kẻ trên biểu đồ
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getXAxis().setDrawAxisLine(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+
+        // Ẩn dữ liệu trục x
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setDrawLabels(false); // Ẩn nhãn trục X
+        xAxis.setDrawAxisLine(false); // Ẩn đường kẻ trục X
+        xAxis.setDrawGridLines(false); // Ẩn đường kẻ lưới trên trục X
+
+        //Ẩn dữ liệu trục Y bên phải
+        YAxis rightAxis = barChart.getAxisRight();
+        rightAxis.setEnabled(false); // Tắt trục Y bên phải
+
+
+    }
 
 
 
