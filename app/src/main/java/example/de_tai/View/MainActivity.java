@@ -135,19 +135,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      GridView gvThongSoThoiTietDiaDiemHienTai; // lv hiển thị dữ liệu
     Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter gridViewThongSoThoiTietDiaDiemHienTaiAdapter;
     ArrayList<Phuoc_GridViewThongSoThoiTietDiaDiemHienTai> grvGridViewThongSoThoiTietDiaDiemHienTai = new ArrayList<>();
-    String url_gv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=1&aqi=yes&alerts=no";
 
     // Barchart
     BarChart barChart;
     List<String> lsNhietDoCaoNhat = new ArrayList<>();
     List<String> lsNhietDoThapNhat = new ArrayList<>();
-    String url_barchart = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=3&aqi=yes&alerts=no";
+    String url_barchart_gv_rcv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=London&days=3&aqi=yes&alerts=no";
 
     // RecyclerView
     RecyclerView rcvThongSoThoiTietTheoNgay;
     Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter recyclerViewThongSoThoiTietTheoNgayAdapter;
     ArrayList<Phuoc_RecyclerViewThongSoThoiTietTheoNgay> lsRecyclerViewThongSoThoiTietTheoNgay = new ArrayList<>();
-    String url_rcv = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q=Saigon&days=3&aqi=yes&alerts=no";
 
 
 
@@ -224,13 +222,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //===========PHƯỚC============
 
         // GridView
-        getAllDataForGridViewForecastCurretnly(url_gv);
+        getAllDataForGridViewForecastCurretnly(url_barchart_gv_rcv);
 
         // Barchart
-        getAllDataForecastCurretnly(url_barchart);
+        getAllDataForecastCurretnly(url_barchart_gv_rcv);
 
         // RecyclerView
-        getDataRecyclerViewForecastDaily(url_rcv);
+        getDataRecyclerViewForecastDaily(url_barchart_gv_rcv);
 
         //===========PHƯỚC============
 
@@ -304,8 +302,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     TVCityName.setText(cityName);
                     getWeatherInfo(city);
                 }
+
+                //===============PHƯỚC============
+                // Nếu người dùng chọn địa điểm khác thì các hàm sẽ được set lại để cho phù hợp
+                //Xóa list trước khi set hàm lên
+                lsNhietDoCaoNhat.clear();
+                lsNhietDoThapNhat.clear();
+                getAllDataForecastCurretnly("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
+                getAllDataForGridViewForecastCurretnly("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
+                getDataRecyclerViewForecastDaily("https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+EdtCity.getText().toString()+"&days=3&aqi=yes&alerts=no");
             }
         });
+
 
         // --- TƯỜNG ---
 
@@ -621,6 +629,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
                         try {
+                            grvGridViewThongSoThoiTietDiaDiemHienTai.clear();
                             parseJsonDataForGridViewForecastCurretnly(response); // Phân tích dữ liệu JSON từ phản hồi
                         } catch (
                                 JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
@@ -695,7 +704,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         pressureMb.moTaIcon = "Áp suất";
         pressureMb.thongSoThoiTietDiaDiemHienTai = String.valueOf(pressureMbObject);
         grvGridViewThongSoThoiTietDiaDiemHienTai.add(pressureMb);
-
+        if(gridViewThongSoThoiTietDiaDiemHienTaiAdapter !=null){
+            gridViewThongSoThoiTietDiaDiemHienTaiAdapter.notifyDataSetChanged();
+        }
 
         gridViewThongSoThoiTietDiaDiemHienTaiAdapter = new Phuoc_GridViewThongSoThoiTietDiaDiemHienTaiAdapter(this, R.layout.thong_so_thoi_tiet_dia_diem_hien_tai_item_layout, grvGridViewThongSoThoiTietDiaDiemHienTai);
         gvThongSoThoiTietDiaDiemHienTai.setAdapter(gridViewThongSoThoiTietDiaDiemHienTaiAdapter);
@@ -727,7 +738,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) { // Khi có lỗi thì phương thức này sẽ được gọi để xử lý yêu cầu
-                Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "errorBarchart", Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(stringRequest); // Yêu cầu hàng đợi (trong trường hợp này là lấy yêu cầu từ file JSON)
@@ -889,6 +900,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onResponse(String response) { // Phương thức này được gọi khi có phản hồi từ yêu cầu
                         try {
+                            lsRecyclerViewThongSoThoiTietTheoNgay.clear();
                             parseJsonDataRecyclerViewForecastDaily(response); // Phân tích dữ liệu JSON từ phản hồi
                         } catch (
                                 JSONException e) { // Xử lý ngoại lệ trong quá trình phân tích dữ liệu
@@ -985,13 +997,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 lsRecyclerViewThongSoThoiTietTheoNgay.add(recyclerViewThongSoThoiTietTheoNgay);
             }*/
             lsRecyclerViewThongSoThoiTietTheoNgay.add(recyclerViewThongSoThoiTietTheoNgay);
+            if (recyclerViewThongSoThoiTietTheoNgayAdapter != null) {
+                recyclerViewThongSoThoiTietTheoNgayAdapter.notifyDataSetChanged();
+            }
+
         }
 
         recyclerViewThongSoThoiTietTheoNgayAdapter = new Phuoc_RecyclerViewThongSoThoiTietTheoNgayAdapter(lsRecyclerViewThongSoThoiTietTheoNgay);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rcvThongSoThoiTietTheoNgay.setLayoutManager(layoutManager);
         rcvThongSoThoiTietTheoNgay.setAdapter(recyclerViewThongSoThoiTietTheoNgayAdapter);
-        recyclerViewThongSoThoiTietTheoNgayAdapter.notifyDataSetChanged();
     }
 
 
