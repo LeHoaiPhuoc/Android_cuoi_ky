@@ -22,6 +22,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     RelativeLayout RLHome;
     ProgressBar PBLoading;
-    TextView TVCityName, TVTemperature1, TVCondition;
+    TextView TVCityName, TVTemperature1, TVCondition, tvHourly, tvChart;
     TextInputEditText EdtCity;
     ImageView IVBack, IVIcon, IVSearch;
     RecyclerView RVWeather;
@@ -273,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         any_chart_view = (AnyChartView) findViewById(R.id.any_chart_view);
         TVTemperature1 = (TextView) findViewById(R.id.TVTemperature1);
         TVCondition = (TextView) findViewById(R.id.TVCondition);
+        tvHourly = (TextView) findViewById(R.id.tvHourly);
+        tvChart = (TextView) findViewById(R.id.tvChart);
         EdtCity = (TextInputEditText) findViewById(R.id.EdtCity);
         IVIcon = (ImageView) findViewById(R.id.IVIcon);
         IVSearch = (ImageView) findViewById(R.id.IVSearch);
@@ -334,18 +337,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // --- TƯỜNG ---
 
-        LLChart.setOnClickListener(new View.OnClickListener() {
+        tvHourly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                String push = TVCityName.getText().toString();
-//                Intent intent = new Intent(MainActivity.this, ChartActivity.class);
-//                intent.putExtra("MY_STRING", push); // Pass the cityName to ChartActivity
-//                startActivity(intent);
 
                 String push2 = TVCityName.getText().toString();
                 Intent intent2 = new Intent(MainActivity.this, HangGioActivity.class);
                 intent2.putExtra("MY_STRING_2", push2); // Pass the cityName to ChartActivity
                 startActivity(intent2);
+            }
+        });
+
+        tvChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String push = TVCityName.getText().toString();
+                Intent intent = new Intent(MainActivity.this, ChartActivity.class);
+                intent.putExtra("MY_STRING", push); // Pass the cityName to ChartActivity
+                startActivity(intent);
+
             }
         });
 
@@ -376,7 +386,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onResponse(JSONObject response) {
 //                PBLoading.setVisibility(View.GONE);
 //                RLHome.setVisibility(View.VISIBLE);
-                weatherRVModelArrayList.clear();
 
                 try {
                     List<DataEntry> data = new ArrayList<>();
@@ -391,7 +400,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     // Picasso.get().load("http:".concat(conditionIcon)).into(IVIcon);
                     Picasso.get().load("https:" + conditionIcon).into(IVIcon);
                     TVCondition.setText(condition);
-
 
 
                     JSONObject forecastObj = response.getJSONObject("forecast");
@@ -422,7 +430,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         weatherRVAdaper.notifyDataSetChanged();
 
                         data.add(new ValueDataEntry(hourOnly, Integer.parseInt(rain)));
-                       // hoursAdded++;
+                        hoursAdded++;
                     }
 
                     //VẼ SƠ ĐỒ
@@ -1221,10 +1229,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
-
-
-
     //=============================PHƯỚC========================
+
 
 }
 

@@ -117,8 +117,8 @@
 
             <ImageView
                 android:id="@+id/IVIcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_below="@id/TVTemperature1"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
@@ -159,8 +159,9 @@
                 android:id="@+id/gvThongSoThoiTietDiaDiemHienTai"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_margin="10dp"
+                android:padding="10dp"
+                android:background="@drawable/custom_border"
                 android:numColumns="3" />
 
             <LinearLayout
@@ -172,12 +173,12 @@
                 android:paddingBottom="20dp">
 
                 <TextView
-                    android:id="@+id/tvRecyclerView"
+                    android:id="@+id/tvHourly"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                    android:text="Hourly"
+                    android:text="Hourly ➡️"
                     android:textColor="@color/black"
                     android:textSize="10pt" />
 
@@ -230,12 +231,12 @@
 
 
                     <TextView
-                        android:id="@+id/tcChart"
+                        android:id="@+id/tvChart"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
-                        android:text="Chart"
+                        android:text="Chart ➡️"
                         android:textColor="@color/black"
                         android:textSize="10pt" />
 

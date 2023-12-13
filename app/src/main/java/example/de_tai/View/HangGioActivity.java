@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -23,14 +25,16 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import example.de_tai.Controller.An_HangGioAdapter;
+import example.de_tai.Controller.Tuong_HangGioAdapter;
 import example.de_tai.Model.HangGioClass;
 import example.de_tai.R;
 
 public class HangGioActivity extends AppCompatActivity {
 
     ListView lvHangGio;
-    An_HangGioAdapter hangGioAdapter;
+
+    ImageButton imgBack1;
+    Tuong_HangGioAdapter hangGioAdapter;
     ArrayList<HangGioClass> lsHangGio = new ArrayList<>();
 
 
@@ -39,6 +43,8 @@ public class HangGioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hang_gio);
         lvHangGio = (ListView) findViewById(R.id.lvHangGio);
+        imgBack1 = (ImageButton) findViewById(R.id.imgBack1);
+
         setBackground();
         //-----------------------------------
 
@@ -47,6 +53,13 @@ public class HangGioActivity extends AppCompatActivity {
         String url = "https://api.weatherapi.com/v1/forecast.json?key=0f4ce91ee1a24deebce53135232211&q="+test2+"&days=3&aqi=yes&alerts=no";
         getAllDataArtist(url);
 
+
+        imgBack1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -161,7 +174,7 @@ public class HangGioActivity extends AppCompatActivity {
                 hoursAdded++;
             }
         }
-        hangGioAdapter = new An_HangGioAdapter(getApplicationContext(), R.layout.layout_hanggio_final, lsHangGio);
+        hangGioAdapter = new Tuong_HangGioAdapter(getApplicationContext(), R.layout.layout_hanggio_final, lsHangGio);
         lvHangGio.setAdapter(hangGioAdapter);
     }
 
